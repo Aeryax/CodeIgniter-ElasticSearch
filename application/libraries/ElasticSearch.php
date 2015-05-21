@@ -9,17 +9,17 @@
 class ElasticSearch
 {
 
-	private $ci;
+    private $ci;
 
 
     /**
      * constructor setting the config variables for server ip and index.
      */
-	public function __construct() {
-		$this->ci =& get_instance();
-		$this->ci->load->library('curl');
-		$this->ci->config->load("elastic_search");
-	}
+    public function __construct() {
+        $this->ci =& get_instance();
+        $this->ci->load->library('curl');
+        $this->ci->config->load("elastic_search");
+    }
 
     /**
      * Handling the call for every function with curl
@@ -31,8 +31,8 @@ class ElasticSearch
      * @return type
      * @throws Exception
      */
-	private function call($path, $method = 'GET', $data = NULL) {
-		if (!$this->ci->config->item('index')) {
+    private function call($path, $method = 'GET', $data = NULL) {
+        if (!$this->ci->config->item('index')) {
             throw new Exception('index needs a value');
         }
 
@@ -64,14 +64,14 @@ class ElasticSearch
 
         return json_decode($response, TRUE);
 
-	}
+    }
 
     /**
      * create a index with mapping or not
      * 
      * @param json $map
      */
-	public function create($map = FALSE)
+    public function create($map = FALSE)
     {
         if (!$map) {
             $this->call(NULL, 'PUT');
@@ -97,9 +97,9 @@ class ElasticSearch
      * 
      * @return array
      */
-	public function count($type)
+    public function count($type)
     {
-        return $this->call($type . '/_count?' . http_build_query(array(null => '{matchAll:{}}')));
+        return $this->call($type . '/_count?' . http_build_query(array(NULL => '{matchAll:{}}')));
     }
 
     /**
@@ -110,7 +110,7 @@ class ElasticSearch
      * 
      * @return array
      */
-	public function map($type, $data)
+    public function map($type, $data)
     {
         return $this->call($type . '/_mapping', 'PUT', $data);
     }
@@ -124,7 +124,7 @@ class ElasticSearch
      * 
      * @return type
      */
-	public function add($type, $id, $data)
+    public function add($type, $id, $data)
     {
         return $this->call($type . '/' . $id, 'PUT', $data);
     }
@@ -217,16 +217,16 @@ class ElasticSearch
      * 
      * @return array 
      */
-    public function morelikethis($type, $id, $fields = false, $data = false)
+    public function morelikethis($type, $id, $fields = FALSE, $data = FALSE)
     {
-        if ($data != false && !$fields) {
-            return $this -> call($type . '/' . $id . '/_mlt', 'GET', $data);
-        } else if ($data != false && $fields != false) {
-            return $this -> call($type . '/' . $id . '/_mlt?' . $fields, 'POST', $data);
+        if ($data != FALSE && !$fields) {
+            return $this->call($type . '/' . $id . '/_mlt', 'GET', $data);
+        } else if ($data != FALSE && $fields != FALSE) {
+            return $this->call($type . '/' . $id . '/_mlt?' . $fields, 'POST', $data);
         } else if (!$fields) {
-            return $this -> call($type . '/' . $id . '/_mlt');
+            return $this->call($type . '/' . $id . '/_mlt');
         } else {
-            return $this -> call($type . '/' . $id . '/_mlt?' . $fields);
+            return $this->call($type . '/' . $id . '/_mlt?' . $fields);
         }
     }
 
