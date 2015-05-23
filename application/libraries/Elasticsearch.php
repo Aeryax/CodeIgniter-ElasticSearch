@@ -6,7 +6,7 @@
  * @package ElasticSearch
  * 
  */
-class ElasticSearch
+class Elasticsearch
 {
 
     private $ci;
@@ -61,6 +61,8 @@ class ElasticSearch
         }
 
         $response = $this->ci->curl->execute();
+
+
 
         return json_decode($response, TRUE);
 
@@ -124,9 +126,21 @@ class ElasticSearch
      * 
      * @return type
      */
-    public function add($type, $id, $data)
+    public function add_with_id($type, $id, $data)
     {
         return $this->call($type . '/' . $id, 'PUT', $data);
+    }
+
+    /**
+     * set the mapping for the index
+     * 
+     * @param type $type
+     * @param type $data
+     * 
+     * @return type
+     */
+    public function add($type, $data) {
+        return $this->call($type . '/', 'POST', json_encode($data));
     }
 
     /**
